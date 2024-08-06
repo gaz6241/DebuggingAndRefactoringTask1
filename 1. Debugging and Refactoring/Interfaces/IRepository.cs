@@ -7,7 +7,7 @@
     {
         Task<T?> GetByAccountNumberAsync(int accountNo);
         Task<int> AddAsync(T bankAccount);
-        Task<bool> UpdateAsync(Account bankAccount);
+        Task<bool> UpdateAsync(T bankAccount);
         Task DeleteAsync(int accountNo);
     }
 }
