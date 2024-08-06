@@ -52,7 +52,7 @@ namespace BankingSystem
             }
         }
 
-        private async static Task CreateAccount()
+        private static async Task CreateAccount()
         {
             Console.Write("Enter Account Holder Name: ");
             var name = Console.ReadLine();
@@ -69,7 +69,7 @@ namespace BankingSystem
             Console.WriteLine($"Success. Account Number is {accountNo}");
         }
 
-        private async static Task Deposit()
+        private static async Task Deposit()
         {
             Account account = await FindAccount();
             Console.Write("Enter Amount to Deposit: ");
@@ -100,7 +100,7 @@ namespace BankingSystem
             Console.WriteLine($"{message}. New balance: {account.GetDisplayBalance()}");
         }
 
-        private async static Task Withdraw()
+        private static async Task Withdraw()
         {
             Account account = await FindAccount();
             Console.Write("Enter Amount to Withdraw: ");
@@ -131,7 +131,7 @@ namespace BankingSystem
             Console.WriteLine($"{message}. New balance: {account.GetDisplayBalance()}");
         }
 
-        private async static Task DisplayTransactions()
+        private static async Task DisplayTransactions()
         {
             Account account = await FindAccount();
             IEnumerable<Transaction> transactions = account.GetTransactions();
@@ -145,7 +145,7 @@ namespace BankingSystem
             Console.WriteLine($"\nBalance: {account.GetDisplayBalance()}");
         }
 
-        private async static Task<Account> FindAccount()
+        private static async Task<Account> FindAccount()
         {
             bool searching = true;
             int accountId;
@@ -179,7 +179,7 @@ namespace BankingSystem
             return account;
         }
 
-        private async static Task DisplayAccountDetails()
+        private static async Task DisplayAccountDetails()
         {
             var account = await FindAccount();
             Console.WriteLine($"Account Holder: {account.GetName()}");
