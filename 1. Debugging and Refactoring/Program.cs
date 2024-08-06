@@ -54,95 +54,128 @@ namespace BankingSystem
 
         private static async Task CreateAccount()
         {
-            Console.Write("Enter Account Holder Name: ");
-            var name = Console.ReadLine();
-
-            var (isValid, reason) = name.IsValidName();
-
-            if (!isValid)
+            try
             {
-                Console.WriteLine(reason);
-                return;
-            }
+                Console.Write("Enter Account Holder Name: ");
+                var name = Console.ReadLine();
 
-            int accountNo = await _bankService.CreateAccount(name);
-            Console.WriteLine($"Success. Account Number is {accountNo}");
+                var (isValid, reason) = name.IsValidName();
+
+                if (!isValid)
+                {
+                    Console.WriteLine(reason);
+                    return;
+                }
+
+                int accountNo = await _bankService.CreateAccount(name);
+                Console.WriteLine($"Success. Account Number is {accountNo}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Nice error message"); //show in toast
+                //log
+            }
         }
 
         private static async Task Deposit()
         {
-            Account account = await FindAccount();
-            Console.Write("Enter Amount to Deposit: ");
-            var inputValue = Console.ReadLine();
-
-            if (!inputValue.IsValidAmount())
+            try
             {
-                Console.WriteLine("Invalid amount");
-                return;
+                Account account = await FindAccount();
+                Console.Write("Enter Amount to Deposit: ");
+                var inputValue = Console.ReadLine();
+
+                if (!inputValue.IsValidAmount())
+                {
+                    Console.WriteLine("Invalid amount");
+                    return;
+                }
+
+                decimal amount = decimal.Parse(inputValue);
+                var (result, message) = account.Deposit(amount);
+
+                if (result == TransactionResult.Fail)
+                {
+                    Console.WriteLine(message);
+                    return;
+                }
+
+                var updated = await _bankService.UpdateAccount(account);
+
+                if (!updated)
+                {
+                    throw new Exception("An error has occurred updating the bank account");
+                }
+
+                Console.WriteLine($"{message}. New balance: {account.GetDisplayBalance()}");
             }
-
-            decimal amount = decimal.Parse(inputValue);
-            var (result, message) = account.Deposit(amount);
-
-            if (result == TransactionResult.Fail)
+            catch (Exception ex)
             {
-                Console.WriteLine(message);
-                return;
+                Console.WriteLine("Nice error message"); //show in toast
+                //log
             }
-
-            var updated = await _bankService.UpdateAccount(account);
-
-            if (!updated)
-            {
-                throw new Exception("An error has occurred updating the bank account");
-            }
-
-            Console.WriteLine($"{message}. New balance: {account.GetDisplayBalance()}");
         }
 
         private static async Task Withdraw()
         {
-            Account account = await FindAccount();
-            Console.Write("Enter Amount to Withdraw: ");
-            var inputValue = Console.ReadLine();
-
-            if (!inputValue.IsValidAmount())
+            try
             {
-                Console.WriteLine("Invalid amount");
-                return;
+                Account account = await FindAccount();
+                Console.Write("Enter Amount to Withdraw: ");
+                var inputValue = Console.ReadLine();
+
+                if (!inputValue.IsValidAmount())
+                {
+                    Console.WriteLine("Invalid amount");
+                    return;
+                }
+
+                decimal amount = decimal.Parse(inputValue);
+                var (result, message) = account.Withdraw(amount);
+
+                if (result == TransactionResult.Fail)
+                {
+                    Console.WriteLine(message);
+                    return;
+                }
+
+                var updated = await _bankService.UpdateAccount(account);
+
+                if (!updated)
+                {
+                    throw new Exception("An error has occurred updating the bank account");
+                }
+
+                Console.WriteLine($"{message}. New balance: {account.GetDisplayBalance()}");
             }
-
-            decimal amount = decimal.Parse(inputValue);
-            var (result, message) = account.Withdraw(amount);
-
-            if (result == TransactionResult.Fail)
+            catch (Exception ex)
             {
-                Console.WriteLine(message);
-                return;
+                Console.WriteLine("Nice error message"); //show in toast
+                //log error
             }
-
-            var updated = await _bankService.UpdateAccount(account);
-
-            if (!updated)
-            {
-                throw new Exception("An error has occurred updating the bank account");
-            }
-
-            Console.WriteLine($"{message}. New balance: {account.GetDisplayBalance()}");
         }
 
         private static async Task DisplayTransactions()
         {
-            Account account = await FindAccount();
-            IEnumerable<Transaction> transactions = account.GetTransactions();
-            Console.WriteLine();
-
-            foreach (var transaction in transactions)
+            try
             {
-                Console.WriteLine($"{transaction.Created.FormatDate()} \t {transaction.Type} \t {transaction.Amount:0.00}");
-            }
+                Account account = await FindAccount();
+                IEnumerable<Transaction> transactions = account.GetTransactions();
+                Console.WriteLine();
 
-            Console.WriteLine($"\nBalance: {account.GetDisplayBalance()}");
+                foreach (var transaction in transactions)
+                {
+                    Console.WriteLine(
+                        $"{transaction.Created.FormatDate()} \t {transaction.Type} \t {transaction.Amount:0.00}");
+                }
+
+                Console.WriteLine($"\nBalance: {account.GetDisplayBalance()}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Nice error message"); //show in toast
+                //log
+            }
         }
 
         private static async Task<Account> FindAccount()
