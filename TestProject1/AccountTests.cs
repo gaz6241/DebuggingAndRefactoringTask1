@@ -9,7 +9,7 @@ namespace TestProject1
         public void Add_New_Account_And_Verify_Initial_Values()  
         {
             // Arrange
-            var accountHolder = "Johnny Rotten";
+            const string accountHolder = "Johnny Rotten";
 
             // Act
             var account = new Account(accountHolder);
@@ -23,7 +23,7 @@ namespace TestProject1
         public void Deposit_Value_And_Returns_Success()
         {
             // Arrange
-            var accountHolder = "Snoop Dogg";
+            const string accountHolder = "Snoop Dogg";
             var account = new Account(accountHolder);
 
             // Act
@@ -40,7 +40,7 @@ namespace TestProject1
         public void Deposit_Two_Values_And_Are_Summed_Correctly()
         {
             // Arrange
-            var accountHolder = "Britney Spears";
+            const string accountHolder = "Britney Spears";
             var account = new Account(accountHolder);
 
             // Act
@@ -58,7 +58,7 @@ namespace TestProject1
         public void Deposit_Value_And_Returns_InvalidAmount()
         {
             // Arrange
-            var accountHolder = "Johnny Rotten";
+            const string accountHolder = "Johnny Rotten";
             var account = new Account(accountHolder);
 
             // Act
@@ -75,7 +75,7 @@ namespace TestProject1
         public void Withdraw_Value_And_Returns_InsufficientFunds()
         {
             // Arrange
-            var accountHolder = "Sheryl Crow";
+            const string accountHolder = "Sheryl Crow";
             var account = new Account(accountHolder);
 
             // Act
@@ -93,7 +93,7 @@ namespace TestProject1
         public void Withdraw_Value_And_Balance_Is_What_Is_Expected()
         {
             // Arrange
-            var accountHolder = "Kurt Cobain";
+            const string accountHolder = "Kurt Cobain";
             var account = new Account(accountHolder);
 
             // Act
